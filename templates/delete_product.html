@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}Eliminar Producto - SportStore{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-8 col-lg-6">
+        <div class="card border-danger shadow-lg">
+            <div class="card-header bg-danger text-white py-3">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-exclamation-triangle-fill fs-3 me-3"></i>
+                    <div>
+                        <h4 class="mb-0">Confirmar Eliminación</h4>
+                        <small class="opacity-75">Esta acción no se puede deshacer</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-body p-4">
+                <div class="text-center mb-4">
+                    <div class="display-1 text-danger mb-3">
+                        <i class="bi bi-trash3-fill"></i>
+                    </div>
+                    <h3>¿Estás seguro que deseas eliminar este producto?</h3>
+                    <p class="text-muted">El producto será eliminado permanentemente del sistema</p>
+                </div>
+                
+                <!-- Product Info Card -->
+                <div class="card mb-4 border-warning">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4 text-center">
+                                <img src="{{ product.image_url or 'https://via.placeholder.com/150x150?text=Producto' }}" 
+                                     class="img-fluid rounded mb-3" 
+                                     alt="{{ product.name }}"
+                                     style="max-height: 150px;">
+                            </div>
+                            <div class="col-md-8">
+                                <h5 class="card-title text-danger">{{ product.name }}</h5>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <p class="mb-1"><strong>Precio:</strong></p>
+                                        <h4 class="text-success">${{ product.price }}</h4>
+                                    </div>
+                                    <div class="col-6">
+                                        <p class="mb-1"><strong>Stock:</strong></p>
+                                        <span class="badge bg-{{ 'success' if product.quantity > 10 else 'warning' if product.quantity > 0 else 'danger' }} fs-6">
+                                            {{ product.quantity }} unidades
+                                        </span>
+                                    </div>
+                                </div>
+                                {% if product.category %}
+                                <p class="mb-1"><strong>Categoría:</strong> {{ product.category }}</p>
+                                {% endif %}
+                                {% if product.brand %}
+                                <p class="mb-0"><strong>Marca:</strong> {{ product.brand }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Warning Message -->
+                <div class="alert alert-warning" role="alert">
+                    <div class="d-flex">
+                        <i class="bi bi-exclamation-octagon-fill fs-4 me-3"></i>
+                        <div>
+                            <strong>Advertencia:</strong> Todos los datos del producto serán eliminados permanentemente. 
+                            Esta acción afectará cualquier información relacionada con este producto.
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="d-flex justify-content-between pt-3">
+                    <a href="{{ url_for('home') }}" class="btn btn-outline-secondary btn-lg">
+                        <i class="bi bi-arrow-left"></i> Volver al Inicio
+                    </a>
+                    
+                    <form action="{{ url_for('confirm_delete', product_id=product._id) }}" method="POST" class="d-inline">
+                        <button type="submit" class="btn btn-danger btn-lg px-4">
+                            <i class="bi bi-trash-fill"></i> Sí, Eliminar Producto
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="card-footer bg-light text-center">
+                <small class="text-muted">
+                    <i class="bi bi-info-circle"></i> Si necesitas conservar la información, considera editar el producto en lugar de eliminarlo.
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Confirmación adicional
+document.querySelector('form').addEventListener('submit', function(e) {
+    if (!confirm('¿ESTÁS ABSOLUTAMENTE SEGURO?\n\nEsta acción es permanente y no se puede deshacer.')) {
+        e.preventDefault();
+    }
+});
+
+// Deshabilitar doble clic
+let submitted = false;
+document.querySelector('form button[type="submit"]').addEventListener('click', function() {
+    if (submitted) {
+        return false;
+    }
+    submitted = true;
+    this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Eliminando...';
+    this.disabled = true;
+});
+</script>
+{% endblock %}

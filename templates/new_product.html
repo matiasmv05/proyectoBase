@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}Nuevo Producto - Tienda Deportiva{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">
+                    <i class="bi bi-plus-circle"></i> Agregar Nuevo Producto
+                </h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('addProduct') }}" novalidate>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <h5 class="border-bottom pb-2 mb-3">
+                                <i class="bi bi-info-circle"></i> Información Básica
+                            </h5>
+                            
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Nombre del Producto *</label>
+                                <input type="text" class="form-control" id="name" name="name" 
+                                       required maxlength="100">
+                                <div class="form-text">Ej: Pelota de Fútbol Adidas</div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Descripción</label>
+                                <textarea class="form-control" id="description" name="description" 
+                                          rows="3"></textarea>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="price" class="form-label">Precio ($) *</label>
+                                    <input type="number" class="form-control" id="price" name="price" 
+                                           step="0.01" min="0" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="quantity" class="form-label">Cantidad *</label>
+                                    <input type="number" class="form-control" id="quantity" name="quantity" 
+                                           min="0" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Categoría e Imagen -->
+                        <div class="col-md-6">
+                            <h5 class="border-bottom pb-2 mb-3">
+                                <i class="bi bi-tags"></i> Categoría e Imagen
+                            </h5>
+                            
+                            <div class="mb-3">
+                                <label for="category" class="form-label">Categoría *</label>
+                                <select class="form-select" id="category" name="category" required>
+                                    <option value="" disabled selected>Selecciona una categoría</option>
+                                    {% for category in categories %}
+                                    <option value="{{ category }}">{{ category }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="brand" class="form-label">Marca</label>
+                                <input type="text" class="form-control" id="brand" name="brand">
+                            </div>
+                        
+                        </div>
+                    </div>
+                    
+                    <div class="border-top pt-4 mt-4">
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ url_for('home') }}" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Guardar Producto
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Validación básica del formulario
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const name = document.getElementById('name').value.trim();
+        const price = document.getElementById('price').value;
+        const quantity = document.getElementById('quantity').value;
+        
+        if (!name || !price || !quantity) {
+            e.preventDefault();
+            alert('Por favor, completa todos los campos obligatorios (*)');
+            return false;
+        }
+        
+        if (parseFloat(price) < 0) {
+            e.preventDefault();
+            alert('El precio no puede ser negativo');
+            return false;
+        }
+        
+        if (parseInt(quantity) < 0) {
+            e.preventDefault();
+            alert('La cantidad no puede ser negativa');
+            return false;
+        }
+    });
+</script>
+{% endblock %}

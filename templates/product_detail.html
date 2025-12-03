@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }} - SportStore{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Product Image -->
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-body text-center p-4">
+                <img src="{{ product.image_url or '/static/images/default-product.jpg' }}" 
+                     class="img-fluid rounded" 
+                     alt="{{ product.name }}"
+                     style="max-height: 400px; object-fit: contain;">
+            </div>
+        </div>
+    </div>
+    
+    <!-- Product Details -->
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">{{ product.name }}</h3>
+            </div>
+            <div class="card-body">
+                <div class="mb-4">
+                    <p class="lead">{{ product.description or 'Sin descripción disponible' }}</p>
+                </div>
+                
+                <!-- Price and Stock -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card bg-light">
+                            <div class="card-body text-center">
+                                <h5 class="text-muted mb-2">Precio</h5>
+                                <h1 class="text-success">${{ product.price }}</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card bg-light">
+                            <div class="card-body text-center">
+                                <h5 class="text-muted mb-2">Stock Disponible</h5>
+                                <h1 class="text-{{ 'success' if product.quantity > 10 else 'warning' if product.quantity > 0 else 'danger' }}">
+                                    {{ product.quantity }}
+                                </h1>
+                                <small class="text-muted">unidades</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product Information -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="bi bi-info-circle"></i> Información del Producto</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-borderless">
+                            <tbody>
+                                <tr>
+                                    <th width="30%">Categoría:</th>
+                                    <td>
+                                        <span class="badge bg-primary fs-6">{{ product.category or 'No especificada' }}</span>
+                                    </td>
+                                </tr>
+                                {% if product.brand %}
+                                <tr>
+                                    <th>Marca:</th>
+                                    <td>{{ product.brand }}</td>
+                                </tr>
+                                {% endif %}
+                                <tr>
+                                    <th>Fecha Creación:</th>
+                                    <td>
+                                        {% if product.created_at %}
+                                        {{ product.created_at.strftime('%d/%m/%Y %H:%M') }}
+                                        {% else %}
+                                        No disponible
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% if product.updated_at and product.updated_at != product.created_at %}
+                                <tr>
+                                    <th>Última Actualización:</th>
+                                    <td>{{ product.updated_at.strftime('%d/%m/%Y %H:%M') }}</td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="d-flex justify-content-between">
+                    <a href="{{ url_for('home') }}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left"></i> Volver al Inicio
+                    </a>
+                    
+                    <div class="btn-group">
+                        <a href="{{ url_for('edit_product', product_id=product._id) }}" 
+                           class="btn btn-warning">
+                            <i class="bi bi-pencil"></i> Editar
+                        </a>
+                        <a href="{{ url_for('delete_product', product_id=product._id) }}" 
+                           class="btn btn-danger">
+                            <i class="bi bi-trash"></i> Eliminar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

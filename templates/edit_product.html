@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Producto - SportStore{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="card shadow">
+            <div class="card-header bg-warning text-white">
+                <h4 class="mb-0">
+                    <i class="bi bi-pencil-square"></i> Editar Producto
+                </h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('update_product', product_id=product._id) }}" novalidate>
+                    <div class="row g-4">
+                        <!-- Información Básica -->
+                        <div class="col-md-6">
+                            <h5 class="border-bottom pb-2 mb-3">
+                                <i class="bi bi-info-circle"></i> Información Básica
+                            </h5>
+                            
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Nombre del Producto *</label>
+                                <input type="text" class="form-control" id="name" name="name" 
+                                       value="{{ product.name }}" required maxlength="100">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Descripción</label>
+                                <textarea class="form-control" id="description" name="description" 
+                                          rows="3">{{ product.description }}</textarea>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="price" class="form-label">Precio ($) *</label>
+                                    <input type="number" class="form-control" id="price" name="price" 
+                                           value="{{ product.price }}" step="0.01" min="0" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="quantity" class="form-label">Cantidad *</label>
+                                    <input type="number" class="form-control" id="quantity" name="quantity" 
+                                           value="{{ product.quantity }}" min="0" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Categoría e Imagen -->
+                        <div class="col-md-6">
+                            <h5 class="border-bottom pb-2 mb-3">
+                                <i class="bi bi-tags"></i> Categoría e Imagen
+                            </h5>
+                            
+                            <div class="mb-3">
+                                <label for="category" class="form-label">Categoría *</label>
+                                <select class="form-select" id="category" name="category" required>
+                                    <option value="" disabled>Selecciona una categoría</option>
+                                    {% for category in categories %}
+                                        <option value="{{ category }}" {% if product.category == category %}selected{% endif %}>
+                                            {{ category }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="brand" class="form-label">Marca</label>
+                                <input type="text" class="form-control" id="brand" name="brand"
+                                       value="{{ product.brand }}">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="image_url" class="form-label">URL de Imagen</label>
+                                <input type="url" class="form-control" id="image_url" name="image_url"
+                                       value="{{ product.image_url }}"
+                                       placeholder="https://ejemplo.com/imagen.jpg">
+                                <div class="form-text">Deja vacío para usar imagen por defecto</div>
+                            </div>
+                            
+                            <!-- Vista previa de la imagen -->
+                            {% if product.image_url %}
+                            <div class="mb-3">
+                                <label class="form-label">Vista previa actual:</label>
+                                <div class="border rounded p-2 text-center">
+                                    <img src="{{ product.image_url }}" 
+                                         class="img-fluid rounded" 
+                                         style="max-height: 150px;"
+                                         alt="Vista previa">
+                                    <p class="mt-2 text-muted small">{{ product.image_url }}</p>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <!-- Información del producto -->
+                    <div class="card bg-light mt-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p class="mb-1">
+                                        <strong>ID:</strong> 
+                                        <code>{{ product._id }}</code>
+                                    </p>
+                                    {% if product.created_at %}
+                                    <p class="mb-1">
+                                        <strong>Creado:</strong> 
+                                        {{ product.created_at.strftime('%d/%m/%Y %H:%M') }}
+                                    </p>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6 text-end">
+                                    <a href="{{ url_for('product_detail', product_id=product._id) }}" 
+                                       class="btn btn-sm btn-info">
+                                        <i class="bi bi-eye"></i> Ver Detalles
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border-top pt-4 mt-4">
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ url_for('home') }}" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Cancelar
+                            </a>
+                            <div>
+                                <button type="submit" class="btn btn-warning">
+                                    <i class="bi bi-check-circle"></i> Actualizar Producto
+                                </button>
+                                <a href="{{ url_for('delete_product', product_id=product._id) }}" 
+                                   class="btn btn-outline-danger">
+                                    <i class="bi bi-trash"></i> Eliminar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
