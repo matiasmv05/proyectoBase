@@ -148,6 +148,7 @@ def update_product(product_id):
         return redirect(url_for('home'))
 
 @app.route('/products/<string:product_id>/delete', methods=['GET'])
+
 def delete_product(product_id):
     """Mostrar confirmación para eliminar producto"""
     products = db['products']
