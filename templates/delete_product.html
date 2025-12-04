@@ -65,8 +65,7 @@
                     <div class="d-flex">
                         <i class="bi bi-exclamation-octagon-fill fs-4 me-3"></i>
                         <div>
-                            <strong>Advertencia:</strong> Todos los datos del producto serán eliminados permanentemente. 
-                            Esta acción afectará cualquier información relacionada con este producto.
+                            <strong>Advertencia:</strong> Todos los datos del producto serán eliminados permanentemente.
                         </div>
                     </div>
                 </div>
@@ -77,12 +76,18 @@
                         <i class="bi bi-arrow-left"></i> Volver al Inicio
                     </a>
                     
-                    <form action="{{ url_for('confirm_delete', product_id=product._id) }}" method="POST" class="d-inline">
+                   <form action="{{ url_for('delete_product', product_id=product._id) }}" method="POST" class="d-inline">
                         <button type="submit" class="btn btn-danger btn-lg px-4">
                             <i class="bi bi-trash-fill"></i> Sí, Eliminar Producto
                         </button>
                     </form>
                 </div>
+            </div>
+            
+            <div class="card-footer bg-light text-center">
+                <small class="text-muted">
+                    <i class="bi bi-info-circle"></i> Si necesitas conservar la información, considera editar el producto en lugar de eliminarlo.
+                </small>
             </div>
         </div>
     </div>
