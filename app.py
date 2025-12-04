@@ -35,7 +35,9 @@ def addProduct():
     description = request.form.get('description')
     category = request.form.get('category')
     brand = request.form.get('brand')
-    
+
+    image_url = request.form.get('image_url', '') 
+
     if name and price and quantity and category:
         try:
             product_data = {
@@ -46,7 +48,8 @@ def addProduct():
                 'category': category,
                 'brand': brand,
                 'created_at': datetime.now(),
-                'updated_at': datetime.now()
+                'updated_at': datetime.now(),
+                'image_url': image_url
             }
             
             result = products.insert_one(product_data)

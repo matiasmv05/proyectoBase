@@ -12,7 +12,7 @@
                 </h4>
             </div>
             <div class="card-body">
-                <form method="POST" action="{{ url_for('addProduct') }}" novalidate>
+                <form action="{{ url_for('addProduct') }}" method="POST">
                     <div class="row g-4">
                         <div class="col-md-6">
                             <h5 class="border-bottom pb-2 mb-3">
@@ -44,6 +44,13 @@
                                            min="0" required>
                                 </div>
                             </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="image_url" class="form-label">URL de imagen (opcional)</label>
+                            <input type="url" class="form-control" id="image_url" name="image_url" 
+                                   placeholder="https://ejemplo.com/imagen-producto.jpg">
+                            <div class="form-text">Pega aquí la URL de una imagen del producto</div>
                         </div>
                         
                         <div class="col-md-6">

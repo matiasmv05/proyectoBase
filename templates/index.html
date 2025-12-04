@@ -49,32 +49,30 @@
                         </thead>
                         <tbody>
                             {% for product in products %}
-                            <tr>
-                                <td>{{ product.name }}</td>
-                                <td>${{ product.price }}</td>
-                                <td>
-                                    <span class="badge bg-{{ 'success' if product.quantity > 10 else 'warning' if product.quantity > 0 else 'danger' }}">
-                                        {{ product.quantity }}
-                                    </span>
-                                </td>
-                                <td>{{ product.category or 'General' }}</td>
-                                <td>
-                                    <div class="btn-group btn-group-sm" role="group">
+                            <div class="col-md-4 mb-4">
+                                <div class="card h-100">
+                                    <!-- Mostrar imagen si existe -->
+                                    {% if product.image_url %}
+                                    <img src="{{ product.image_url }}" 
+                                        class="card-img-top" alt="{{ product.name }}" 
+                                        style="height: 200px; object-fit: cover;">
+                                    {% else %}
+                                    <!-- Imagen por defecto si no hay URL -->
+                                    <img src="{{ url_for('static', filename='images/default-product.jpg') }}" 
+                                        class="card-img-top" alt="{{ product.name }}"
+                                        style="height: 200px; object-fit: cover;">
+                                    {% endif %}
+                                    
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ product.name }}</h5>
+                                        <p class="card-text">{{ product.category }}</p>
+                                        <p class="card-text"><strong>${{ "%.2f"|format(product.price) }}</strong></p>
+                                        <p class="card-text">Disponibles: {{ product.quantity }}</p>
                                         <a href="{{ url_for('product_detail', product_id=product._id) }}" 
-                                           class="btn btn-info">
-                                            <i class="bi bi-eye"></i>
-                                        </a>
-                                        <a href="{{ url_for('edit_product', product_id=product._id) }}" 
-                                           class="btn btn-warning">
-                                            <i class="bi bi-pencil"></i>
-                                        </a>
-                                           <a href="{{ url_for('delete_product', product_id=product._id) }}"
-                                           class="btn btn-danger">
-                                            <i class="bi bi-trash"></i>
-                                        </a>
+                                        class="btn btn-primary">Ver detalles</a>
                                     </div>
-                                </td>
-                            </tr>
+                                </div>
+                            </div>
                             {% endfor %}
                         </tbody>
                     </table>
