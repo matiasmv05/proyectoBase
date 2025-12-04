@@ -4,7 +4,6 @@
 
 {% block content %}
 <div class="row">
-
     <!-- Product Details -->
     <div class="col-md-6">
         <div class="card shadow-sm">
@@ -39,7 +38,7 @@
                     </div>
                 </div>
                 
-                <!-- Product Information -->
+                <!--- Product Information --->
                 <div class="card mb-4">
                     <div class="card-header">
                         <h5 class="mb-0"><i class="bi bi-info-circle"></i> Información del Producto</h5>
@@ -87,12 +86,10 @@
                     </a>
                     
                     <div class="btn-group">
-                        <a href="{{ url_for('edit_product', product_id=product._id) }}" 
-                           class="btn btn-warning">
+                        <a href="{{ url_for('edit_product', product_id=product._id) }}" class="btn btn-warning">
                             <i class="bi bi-pencil"></i> Editar
                         </a>
-                           <a href="{{ url_for('delete_product', product_id=product._id) }}"
-                           class="btn btn-danger">
+                        <a href="{{ url_for('show_delete', product_id=product._id) }}" class="btn btn-danger">
                             <i class="bi bi-trash"></i> Eliminar
                         </a>
                     </div>
