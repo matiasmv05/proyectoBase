@@ -146,7 +146,7 @@ def update_product(product_id):
         flash('ID de producto inválido', 'danger')
         return redirect(url_for('home'))
 
-@app.route('/product/delete/<string:product_id>', methods=['GET'])
+@app.route('/product/delete/<string:product_id>', methods=['DELETE'])
 def delete_product(product_id):
     """Mostrar confirmación para eliminar producto"""
     products = db['products']
