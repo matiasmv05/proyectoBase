@@ -13,7 +13,7 @@ app.secret_key = 'sportstore_secret_key_2024'
 CATEGORIES = ['Fútbol', 'Básquetbol', 'Tenis', 'Natación', 'Ciclismo', 'Fitness', 'Running', 'Otros']
 
 @app.route('/')
-@app.route('/products')
+
 def home():
     products = db['products']
     productsReceived = products.find()
@@ -93,7 +93,7 @@ def edit_product(product_id):
         flash('ID de producto inválido', 'danger')
         return redirect(url_for('home'))
 
-@app.route('/products/<string:product_id>/update', methods=['POST'])
+@app.route('/products/<string:product_id>/edit', methods=['POST'])
 def update_product(product_id):
     """Actualizar producto existente"""
     products = db['products']
@@ -148,8 +148,7 @@ def update_product(product_id):
         return redirect(url_for('home'))
 
 @app.route('/products/<string:product_id>/delete', methods=['GET'])
-
-def delete_product(product_id):
+def show_delete(product_id):
     """Mostrar confirmación para eliminar producto"""
     products = db['products']
     
@@ -164,8 +163,8 @@ def delete_product(product_id):
         flash('ID de producto inválido', 'danger')
         return redirect(url_for('home'))
 
-@app.route('/products/<string:product_id>', methods=['POST'])
-def confirm_delete(product_id):
+@app.route('/products/<string:product_id>/delete', methods=['POST'])
+def delete_product(product_id):
     """Eliminar producto (POST)"""
     products = db['products']
     
